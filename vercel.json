@@ -1,0 +1,1 @@
+﻿{"buildCommand":"npx vite build --config vite.vercel.config.ts","outputDirectory":"dist-vercel","rewrites":[{"source":"/((?!assets/).*)","destination":"/index.html"}]}
