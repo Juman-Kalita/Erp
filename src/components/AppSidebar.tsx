@@ -26,6 +26,7 @@ interface NavItem {
 }
 
 const tekItems: NavItem[] = [
+  { label: 'Dashboard', to: '/tek/dashboard', icon: LayoutDashboard },
   { label: 'Leads', to: '/tek/leads', icon: UserPlus },
   { label: 'Clients', to: '/tek/clients', icon: Users },
   { label: 'Team Members', to: '/tek/team', icon: Users },
@@ -35,6 +36,7 @@ const tekItems: NavItem[] = [
 ];
 
 const strategiesItems: NavItem[] = [
+  { label: 'Dashboard', to: '/strategies/dashboard', icon: LayoutDashboard },
   { label: 'Leads', to: '/strategies/leads', icon: UserPlus },
   { label: 'Clients', to: '/strategies/clients', icon: Users },
   { label: 'Team Members', to: '/strategies/team', icon: Users },

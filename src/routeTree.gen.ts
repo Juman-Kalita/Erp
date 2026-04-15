@@ -23,11 +23,13 @@ import { Route as AppTekProjectsRouteImport } from './routes/_app.tek.projects'
 import { Route as AppTekLeadsRouteImport } from './routes/_app.tek.leads'
 import { Route as AppTekInvoicesRouteImport } from './routes/_app.tek.invoices'
 import { Route as AppTekExpensesRouteImport } from './routes/_app.tek.expenses'
+import { Route as AppTekDashboardRouteImport } from './routes/_app.tek.dashboard'
 import { Route as AppTekClientsRouteImport } from './routes/_app.tek.clients'
 import { Route as AppStrategiesTeamRouteImport } from './routes/_app.strategies.team'
 import { Route as AppStrategiesProjectsRouteImport } from './routes/_app.strategies.projects'
 import { Route as AppStrategiesLeadsRouteImport } from './routes/_app.strategies.leads'
 import { Route as AppStrategiesInvoicesRouteImport } from './routes/_app.strategies.invoices'
+import { Route as AppStrategiesDashboardRouteImport } from './routes/_app.strategies.dashboard'
 import { Route as AppStrategiesClientsRouteImport } from './routes/_app.strategies.clients'
 import { Route as AppStrategiesAssetsRouteImport } from './routes/_app.strategies.assets'
 
@@ -100,6 +102,11 @@ const AppTekExpensesRoute = AppTekExpensesRouteImport.update({
   path: '/expenses',
   getParentRoute: () => AppTekRoute,
 } as any)
+const AppTekDashboardRoute = AppTekDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppTekRoute,
+} as any)
 const AppTekClientsRoute = AppTekClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -125,6 +132,11 @@ const AppStrategiesInvoicesRoute = AppStrategiesInvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => AppStrategiesRoute,
 } as any)
+const AppStrategiesDashboardRoute = AppStrategiesDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppStrategiesRoute,
+} as any)
 const AppStrategiesClientsRoute = AppStrategiesClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
@@ -147,11 +159,13 @@ export interface FileRoutesByFullPath {
   '/tek': typeof AppTekRouteWithChildren
   '/strategies/assets': typeof AppStrategiesAssetsRoute
   '/strategies/clients': typeof AppStrategiesClientsRoute
+  '/strategies/dashboard': typeof AppStrategiesDashboardRoute
   '/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
   '/strategies/team': typeof AppStrategiesTeamRoute
   '/tek/clients': typeof AppTekClientsRoute
+  '/tek/dashboard': typeof AppTekDashboardRoute
   '/tek/expenses': typeof AppTekExpensesRoute
   '/tek/invoices': typeof AppTekInvoicesRoute
   '/tek/leads': typeof AppTekLeadsRoute
@@ -169,11 +183,13 @@ export interface FileRoutesByTo {
   '/tek': typeof AppTekRouteWithChildren
   '/strategies/assets': typeof AppStrategiesAssetsRoute
   '/strategies/clients': typeof AppStrategiesClientsRoute
+  '/strategies/dashboard': typeof AppStrategiesDashboardRoute
   '/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
   '/strategies/team': typeof AppStrategiesTeamRoute
   '/tek/clients': typeof AppTekClientsRoute
+  '/tek/dashboard': typeof AppTekDashboardRoute
   '/tek/expenses': typeof AppTekExpensesRoute
   '/tek/invoices': typeof AppTekInvoicesRoute
   '/tek/leads': typeof AppTekLeadsRoute
@@ -193,11 +209,13 @@ export interface FileRoutesById {
   '/_app/tek': typeof AppTekRouteWithChildren
   '/_app/strategies/assets': typeof AppStrategiesAssetsRoute
   '/_app/strategies/clients': typeof AppStrategiesClientsRoute
+  '/_app/strategies/dashboard': typeof AppStrategiesDashboardRoute
   '/_app/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/_app/strategies/leads': typeof AppStrategiesLeadsRoute
   '/_app/strategies/projects': typeof AppStrategiesProjectsRoute
   '/_app/strategies/team': typeof AppStrategiesTeamRoute
   '/_app/tek/clients': typeof AppTekClientsRoute
+  '/_app/tek/dashboard': typeof AppTekDashboardRoute
   '/_app/tek/expenses': typeof AppTekExpensesRoute
   '/_app/tek/invoices': typeof AppTekInvoicesRoute
   '/_app/tek/leads': typeof AppTekLeadsRoute
@@ -217,11 +235,13 @@ export interface FileRouteTypes {
     | '/tek'
     | '/strategies/assets'
     | '/strategies/clients'
+    | '/strategies/dashboard'
     | '/strategies/invoices'
     | '/strategies/leads'
     | '/strategies/projects'
     | '/strategies/team'
     | '/tek/clients'
+    | '/tek/dashboard'
     | '/tek/expenses'
     | '/tek/invoices'
     | '/tek/leads'
@@ -239,11 +259,13 @@ export interface FileRouteTypes {
     | '/tek'
     | '/strategies/assets'
     | '/strategies/clients'
+    | '/strategies/dashboard'
     | '/strategies/invoices'
     | '/strategies/leads'
     | '/strategies/projects'
     | '/strategies/team'
     | '/tek/clients'
+    | '/tek/dashboard'
     | '/tek/expenses'
     | '/tek/invoices'
     | '/tek/leads'
@@ -262,11 +284,13 @@ export interface FileRouteTypes {
     | '/_app/tek'
     | '/_app/strategies/assets'
     | '/_app/strategies/clients'
+    | '/_app/strategies/dashboard'
     | '/_app/strategies/invoices'
     | '/_app/strategies/leads'
     | '/_app/strategies/projects'
     | '/_app/strategies/team'
     | '/_app/tek/clients'
+    | '/_app/tek/dashboard'
     | '/_app/tek/expenses'
     | '/_app/tek/invoices'
     | '/_app/tek/leads'
@@ -382,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTekExpensesRouteImport
       parentRoute: typeof AppTekRoute
     }
+    '/_app/tek/dashboard': {
+      id: '/_app/tek/dashboard'
+      path: '/dashboard'
+      fullPath: '/tek/dashboard'
+      preLoaderRoute: typeof AppTekDashboardRouteImport
+      parentRoute: typeof AppTekRoute
+    }
     '/_app/tek/clients': {
       id: '/_app/tek/clients'
       path: '/clients'
@@ -417,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStrategiesInvoicesRouteImport
       parentRoute: typeof AppStrategiesRoute
     }
+    '/_app/strategies/dashboard': {
+      id: '/_app/strategies/dashboard'
+      path: '/dashboard'
+      fullPath: '/strategies/dashboard'
+      preLoaderRoute: typeof AppStrategiesDashboardRouteImport
+      parentRoute: typeof AppStrategiesRoute
+    }
     '/_app/strategies/clients': {
       id: '/_app/strategies/clients'
       path: '/clients'
@@ -437,6 +475,7 @@ declare module '@tanstack/react-router' {
 interface AppStrategiesRouteChildren {
   AppStrategiesAssetsRoute: typeof AppStrategiesAssetsRoute
   AppStrategiesClientsRoute: typeof AppStrategiesClientsRoute
+  AppStrategiesDashboardRoute: typeof AppStrategiesDashboardRoute
   AppStrategiesInvoicesRoute: typeof AppStrategiesInvoicesRoute
   AppStrategiesLeadsRoute: typeof AppStrategiesLeadsRoute
   AppStrategiesProjectsRoute: typeof AppStrategiesProjectsRoute
@@ -446,6 +485,7 @@ interface AppStrategiesRouteChildren {
 const AppStrategiesRouteChildren: AppStrategiesRouteChildren = {
   AppStrategiesAssetsRoute: AppStrategiesAssetsRoute,
   AppStrategiesClientsRoute: AppStrategiesClientsRoute,
+  AppStrategiesDashboardRoute: AppStrategiesDashboardRoute,
   AppStrategiesInvoicesRoute: AppStrategiesInvoicesRoute,
   AppStrategiesLeadsRoute: AppStrategiesLeadsRoute,
   AppStrategiesProjectsRoute: AppStrategiesProjectsRoute,
@@ -458,6 +498,7 @@ const AppStrategiesRouteWithChildren = AppStrategiesRoute._addFileChildren(
 
 interface AppTekRouteChildren {
   AppTekClientsRoute: typeof AppTekClientsRoute
+  AppTekDashboardRoute: typeof AppTekDashboardRoute
   AppTekExpensesRoute: typeof AppTekExpensesRoute
   AppTekInvoicesRoute: typeof AppTekInvoicesRoute
   AppTekLeadsRoute: typeof AppTekLeadsRoute
@@ -467,6 +508,7 @@ interface AppTekRouteChildren {
 
 const AppTekRouteChildren: AppTekRouteChildren = {
   AppTekClientsRoute: AppTekClientsRoute,
+  AppTekDashboardRoute: AppTekDashboardRoute,
   AppTekExpensesRoute: AppTekExpensesRoute,
   AppTekInvoicesRoute: AppTekInvoicesRoute,
   AppTekLeadsRoute: AppTekLeadsRoute,
