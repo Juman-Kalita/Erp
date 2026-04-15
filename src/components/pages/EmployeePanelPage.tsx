@@ -69,7 +69,9 @@ export function EmployeePanelPage() {
     toast_simple('Marked as not completed');
     setNotCompletedDialog(false); setNotCompletedReason('');
     setTasks(prev => prev.map(t => t.id === selectedTask.id ? { ...t, status: 'to_do' } : t));
-  }; = async () => {
+  }; 
+  
+  const submitReason = async () => {
     if (!selectedTask) return;
     await supabase.from('tasks').update({ description: (selectedTask.description ? selectedTask.description + ' | ' : '') + 'Reason: ' + reason, status: 'to_do' }).eq('id', selectedTask.id);
     toast_simple('Reason submitted');
