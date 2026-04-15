@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBusinessUnit } from '@/hooks/use-business-unit';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Users, UserPlus, FolderKanban, Package, Receipt } from 'lucide-react';
-import { formatINR } from '@/lib/format';
+import { DollarSign, Users, UserPlus, FolderKanban, Package, Receipt } from 'lucide-react';import { formatINR } from '@/lib/format';
 import { Link } from '@tanstack/react-router';
 
 function StatCard({ title, value, icon: Icon, to }: { title: string; value: string | number; icon: React.ElementType; to: string }) {
@@ -24,7 +23,7 @@ function StatCard({ title, value, icon: Icon, to }: { title: string; value: stri
 
 export function StrategiesDashboardPage() {
   const buId = useBusinessUnit('strategies');
-  const [stats, setStats] = useState({ revenue: 0, assets: 0, expenses: 0, leads: 0, clients: 0, team: 0, projects: 0, invoices: 0 });
+  const [stats, setStats] = useState({ revenue: 0, assets: 0, expenses: 0, leads: 0, clients: 0, team: 0, projects: 0, invoices: 0, quotedPrice: 0, finalPrice: 0 });
 
   useEffect(() => {
     if (!buId) return;
@@ -36,7 +35,8 @@ export function StrategiesDashboardPage() {
       supabase.from('team_members').select('id, salary', { count: 'exact' }).eq('business_unit_id', buId),
       supabase.from('projects').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
-    ]).then(([inv, assets, leads, clients, team, projects, allInv]) => {
+      supabase.from('clients').select('quoted_price, final_price').eq('business_unit_id', buId),
+    ]).then(([inv, assets, leads, clients, team, projects, allInv, clientPrices]) => {
       const salaryExpenses = (team.data ?? []).reduce((s: number, m: any) => s + Number(m.salary ?? 0), 0);
       setStats({
         revenue: (inv.data ?? []).reduce((s: number, i: any) => s + Number(i.total), 0),
@@ -47,6 +47,8 @@ export function StrategiesDashboardPage() {
         team: team.count ?? 0,
         projects: projects.count ?? 0,
         invoices: allInv.count ?? 0,
+        quotedPrice: (clientPrices.data ?? []).reduce((s: number, c: any) => s + Number(c.quoted_price ?? 0), 0),
+        finalPrice: (clientPrices.data ?? []).reduce((s: number, c: any) => s + Number(c.final_price ?? 0), 0),
       });
     });
   }, [buId]);
@@ -81,6 +83,22 @@ export function StrategiesDashboardPage() {
         <StatCard title="Team Members" value={stats.team} icon={Users} to="/strategies/team" />
         <StatCard title="Projects" value={stats.projects} icon={FolderKanban} to="/strategies/projects" />
         <StatCard title="Billing" value={stats.invoices} icon={Receipt} to="/strategies/invoices" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Quoted Price</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent><div className="text-2xl font-bold">{formatINR(stats.quotedPrice)}</div></CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Total Final Price</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent><div className="text-2xl font-bold">{formatINR(stats.finalPrice)}</div></CardContent>
+        </Card>
       </div>
     </div>
   );
