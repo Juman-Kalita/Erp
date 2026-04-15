@@ -115,33 +115,35 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
         </div>
       )}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-h-[85vh] flex flex-col">
           <DialogHeader><DialogTitle>{editing ? 'Edit Client' : 'Add New Client'}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2"><Label>Brand Name</Label><Input value={form.brand_name} onChange={e=>setForm({...form,brand_name:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>Category</Label>
+          <div className="space-y-3 overflow-y-auto pr-1">
+            <div className="space-y-1"><Label>Brand Name</Label><Input value={form.brand_name} onChange={e=>setForm({...form,brand_name:e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
+              <div className="space-y-1"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
+            </div>
+            <div className="space-y-1"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1"><Label>Category</Label>
                 <Select value={form.category} onValueChange={v=>setForm({...form,category:v})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent><SelectItem value="corporate">Corporate</SelectItem><SelectItem value="commercial">Commercial</SelectItem><SelectItem value="creator">Creator</SelectItem></SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2"><Label>Billing</Label>
+              <div className="space-y-1"><Label>Billing</Label>
                 <Select value={form.billing_label} onValueChange={v=>setForm({...form,billing_label:v})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="quarterly">Quarterly</SelectItem><SelectItem value="annually">Annually</SelectItem><SelectItem value="one_time">One-Time</SelectItem></SelectContent>
                 </Select>
               </div>
             </div>
-            <div className="space-y-2"><Label>Onboarded Date</Label><Input type="date" value={form.onboarded_at} onChange={e=>setForm({...form,onboarded_at:e.target.value})} /></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2"><Label>Quoted Price (₹)</Label><Input type="number" placeholder="0" value={form.quoted_price} onChange={e=>setForm({...form,quoted_price:e.target.value})} /></div>
-              <div className="space-y-2"><Label>Final Price (₹)</Label><Input type="number" placeholder="0" value={form.final_price} onChange={e=>setForm({...form,final_price:e.target.value})} /></div>
+            <div className="space-y-1"><Label>Onboarded Date</Label><Input type="date" value={form.onboarded_at} onChange={e=>setForm({...form,onboarded_at:e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1"><Label>Quoted Price (₹)</Label><Input type="number" placeholder="0" value={form.quoted_price} onChange={e=>setForm({...form,quoted_price:e.target.value})} /></div>
+              <div className="space-y-1"><Label>Final Price (₹)</Label><Input type="number" placeholder="0" value={form.final_price} onChange={e=>setForm({...form,final_price:e.target.value})} /></div>
             </div>
-            <div className="space-y-2"><Label>Notes</Label><Textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} /></div>
+            <div className="space-y-1"><Label>Notes</Label><Textarea rows={2} value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} /></div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={()=>setDialogOpen(false)}>Cancel</Button>
