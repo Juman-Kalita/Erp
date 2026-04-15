@@ -42,6 +42,7 @@ const strategiesItems: NavItem[] = [
   { label: 'Team Members', to: '/strategies/team', icon: Users },
   { label: 'Projects', to: '/strategies/projects', icon: FolderKanban },
   { label: 'Assets', to: '/strategies/assets', icon: Package },
+  { label: 'Expense Tools', to: '/strategies/expenses', icon: Wrench },
   { label: 'Billing', to: '/strategies/invoices', icon: Receipt },
 ];
 

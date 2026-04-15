@@ -24,8 +24,9 @@ function getStatus(endDate: string) {
   return 'active';
 }
 
-export function ExpenseToolsPage() {
-  const buId = useBusinessUnit('tek');
+export function ExpenseToolsPage({ businessUnit = 'tek' }: { businessUnit?: 'tek' | 'strategies' }) {
+  const buId = useBusinessUnit(businessUnit);
+  const title = businessUnit === 'tek' ? 'Solvix Tek' : 'Solvix Strategies';
   const [items, setItems] = useState<any[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<any>(null);
@@ -58,7 +59,7 @@ export function ExpenseToolsPage() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold">Solvix Tek — Expense Tools</h1>
+        <h1 className="text-2xl font-bold">{title} — Expense Tools</h1>
         <Button size="sm" onClick={openAdd}><Plus className="mr-1 h-4 w-4" />Add Expense</Button>
       </div>
       <Card className="w-fit">

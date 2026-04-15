@@ -29,6 +29,7 @@ import { Route as AppStrategiesTeamRouteImport } from './routes/_app.strategies.
 import { Route as AppStrategiesProjectsRouteImport } from './routes/_app.strategies.projects'
 import { Route as AppStrategiesLeadsRouteImport } from './routes/_app.strategies.leads'
 import { Route as AppStrategiesInvoicesRouteImport } from './routes/_app.strategies.invoices'
+import { Route as AppStrategiesExpensesRouteImport } from './routes/_app.strategies.expenses'
 import { Route as AppStrategiesDashboardRouteImport } from './routes/_app.strategies.dashboard'
 import { Route as AppStrategiesClientsRouteImport } from './routes/_app.strategies.clients'
 import { Route as AppStrategiesAssetsRouteImport } from './routes/_app.strategies.assets'
@@ -132,6 +133,11 @@ const AppStrategiesInvoicesRoute = AppStrategiesInvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => AppStrategiesRoute,
 } as any)
+const AppStrategiesExpensesRoute = AppStrategiesExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => AppStrategiesRoute,
+} as any)
 const AppStrategiesDashboardRoute = AppStrategiesDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -160,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/strategies/assets': typeof AppStrategiesAssetsRoute
   '/strategies/clients': typeof AppStrategiesClientsRoute
   '/strategies/dashboard': typeof AppStrategiesDashboardRoute
+  '/strategies/expenses': typeof AppStrategiesExpensesRoute
   '/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/strategies/assets': typeof AppStrategiesAssetsRoute
   '/strategies/clients': typeof AppStrategiesClientsRoute
   '/strategies/dashboard': typeof AppStrategiesDashboardRoute
+  '/strategies/expenses': typeof AppStrategiesExpensesRoute
   '/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
@@ -210,6 +218,7 @@ export interface FileRoutesById {
   '/_app/strategies/assets': typeof AppStrategiesAssetsRoute
   '/_app/strategies/clients': typeof AppStrategiesClientsRoute
   '/_app/strategies/dashboard': typeof AppStrategiesDashboardRoute
+  '/_app/strategies/expenses': typeof AppStrategiesExpensesRoute
   '/_app/strategies/invoices': typeof AppStrategiesInvoicesRoute
   '/_app/strategies/leads': typeof AppStrategiesLeadsRoute
   '/_app/strategies/projects': typeof AppStrategiesProjectsRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/strategies/assets'
     | '/strategies/clients'
     | '/strategies/dashboard'
+    | '/strategies/expenses'
     | '/strategies/invoices'
     | '/strategies/leads'
     | '/strategies/projects'
@@ -260,6 +270,7 @@ export interface FileRouteTypes {
     | '/strategies/assets'
     | '/strategies/clients'
     | '/strategies/dashboard'
+    | '/strategies/expenses'
     | '/strategies/invoices'
     | '/strategies/leads'
     | '/strategies/projects'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/_app/strategies/assets'
     | '/_app/strategies/clients'
     | '/_app/strategies/dashboard'
+    | '/_app/strategies/expenses'
     | '/_app/strategies/invoices'
     | '/_app/strategies/leads'
     | '/_app/strategies/projects'
@@ -448,6 +460,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppStrategiesInvoicesRouteImport
       parentRoute: typeof AppStrategiesRoute
     }
+    '/_app/strategies/expenses': {
+      id: '/_app/strategies/expenses'
+      path: '/expenses'
+      fullPath: '/strategies/expenses'
+      preLoaderRoute: typeof AppStrategiesExpensesRouteImport
+      parentRoute: typeof AppStrategiesRoute
+    }
     '/_app/strategies/dashboard': {
       id: '/_app/strategies/dashboard'
       path: '/dashboard'
@@ -476,6 +495,7 @@ interface AppStrategiesRouteChildren {
   AppStrategiesAssetsRoute: typeof AppStrategiesAssetsRoute
   AppStrategiesClientsRoute: typeof AppStrategiesClientsRoute
   AppStrategiesDashboardRoute: typeof AppStrategiesDashboardRoute
+  AppStrategiesExpensesRoute: typeof AppStrategiesExpensesRoute
   AppStrategiesInvoicesRoute: typeof AppStrategiesInvoicesRoute
   AppStrategiesLeadsRoute: typeof AppStrategiesLeadsRoute
   AppStrategiesProjectsRoute: typeof AppStrategiesProjectsRoute
@@ -486,6 +506,7 @@ const AppStrategiesRouteChildren: AppStrategiesRouteChildren = {
   AppStrategiesAssetsRoute: AppStrategiesAssetsRoute,
   AppStrategiesClientsRoute: AppStrategiesClientsRoute,
   AppStrategiesDashboardRoute: AppStrategiesDashboardRoute,
+  AppStrategiesExpensesRoute: AppStrategiesExpensesRoute,
   AppStrategiesInvoicesRoute: AppStrategiesInvoicesRoute,
   AppStrategiesLeadsRoute: AppStrategiesLeadsRoute,
   AppStrategiesProjectsRoute: AppStrategiesProjectsRoute,

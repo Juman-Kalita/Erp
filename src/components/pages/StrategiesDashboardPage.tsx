@@ -36,12 +36,14 @@ export function StrategiesDashboardPage() {
       supabase.from('projects').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('clients').select('quoted_price, final_price').eq('business_unit_id', buId),
-    ]).then(([inv, assets, leads, clients, team, projects, allInv, clientPrices]) => {
+      supabase.from('expense_tools').select('amount').eq('business_unit_id', buId),
+    ]).then(([inv, assets, leads, clients, team, projects, allInv, clientPrices, expenses]) => {
       const salaryExpenses = (team.data ?? []).reduce((s: number, m: any) => s + Number(m.salary ?? 0), 0);
+      const toolExpenses = (expenses.data ?? []).reduce((s: number, e: any) => s + Number(e.amount), 0);
       setStats({
         revenue: (inv.data ?? []).reduce((s: number, i: any) => s + Number(i.total), 0),
         assets: (assets.data ?? []).reduce((s: number, a: any) => s + Number(a.price), 0),
-        expenses: salaryExpenses,
+        expenses: salaryExpenses + toolExpenses,
         leads: leads.count ?? 0,
         clients: clients.count ?? 0,
         team: team.count ?? 0,
