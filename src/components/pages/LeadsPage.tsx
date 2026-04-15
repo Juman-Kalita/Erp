@@ -206,16 +206,18 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg max-h-[85vh] flex flex-col">
           <DialogHeader><DialogTitle>{editing ? 'Edit Lead' : 'Add New Lead'}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2"><Label>Brand Name / Company Name</Label><Input value={form.brand_name} onChange={e=>setForm({...form,brand_name:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
-            <div className="space-y-2"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
+          <div className="space-y-3 overflow-y-auto pr-1">
+            <div className="space-y-1"><Label>Brand Name / Company Name</Label><Input value={form.brand_name} onChange={e=>setForm({...form,brand_name:e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
+              <div className="space-y-1"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
+            </div>
+            <div className="space-y-1"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
 
             {isTek && (
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label>Section</Label>
                 <Select value={form.lead_section} onValueChange={v=>setForm({...form,lead_section:v,lead_type:'',lead_type_custom:''})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
@@ -227,8 +229,8 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label>Type</Label>
                 <Select value={form.lead_type} onValueChange={v=>setForm({...form,lead_type:v,lead_type_custom:''})}>
                   <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
@@ -237,14 +239,14 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
                   </SelectContent>
                 </Select>
                 {needsManualInput(form.lead_type) && (
-                  <Input placeholder="Specify type..." value={form.lead_type_custom} onChange={e=>setForm({...form,lead_type_custom:e.target.value})} className="mt-2" />
+                  <Input placeholder="Specify type..." value={form.lead_type_custom} onChange={e=>setForm({...form,lead_type_custom:e.target.value})} className="mt-1" />
                 )}
               </div>
-              <div className="space-y-2"><Label>Quoted Amount (₹)</Label><Input type="number" placeholder="0" value={form.quoted_amount} onChange={e=>setForm({...form,quoted_amount:e.target.value})} /></div>
+              <div className="space-y-1"><Label>Quoted Amount (₹)</Label><Input type="number" placeholder="0" value={form.quoted_amount} onChange={e=>setForm({...form,quoted_amount:e.target.value})} /></div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
                 <Label>Category</Label>
                 <Select value={form.category} onValueChange={v=>setForm({...form,category:v})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
@@ -255,7 +257,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Label>Status</Label>
                 <Select value={form.status} onValueChange={v=>setForm({...form,status:v})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
@@ -266,7 +268,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
                 </Select>
               </div>
             </div>
-            <div className="space-y-2"><Label>Notes</Label><Textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} /></div>
+            <div className="space-y-1"><Label>Notes</Label><Textarea rows={2} value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} /></div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={()=>setDialogOpen(false)}>Cancel</Button>
