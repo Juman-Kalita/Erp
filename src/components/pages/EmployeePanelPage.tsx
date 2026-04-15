@@ -34,6 +34,8 @@ export function EmployeePanelPage() {
   const { user } = useAuth();
   const [tasks, setTasks] = useState<any[]>([]);
   const [member, setMember] = useState<any>(null);
+  const [notCompletedDialog, setNotCompletedDialog] = useState(false);
+  const [notCompletedReason, setNotCompletedReason] = useState('');
   const [reasonDialog, setReasonDialog] = useState(false);
   const [extensionDialog, setExtensionDialog] = useState(false);
   const [forwardDialog, setForwardDialog] = useState(false);
@@ -61,7 +63,13 @@ export function EmployeePanelPage() {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, status } : t));
   };
 
-  const submitReason = async () => {
+  const submitNotCompleted = async () => {
+    if (!selectedTask) return;
+    await supabase.from('tasks').update({ status: 'to_do', description: (selectedTask.description ? selectedTask.description + ' | ' : '') + 'Not completed: ' + notCompletedReason }).eq('id', selectedTask.id);
+    toast_simple('Marked as not completed');
+    setNotCompletedDialog(false); setNotCompletedReason('');
+    setTasks(prev => prev.map(t => t.id === selectedTask.id ? { ...t, status: 'to_do' } : t));
+  }; = async () => {
     if (!selectedTask) return;
     await supabase.from('tasks').update({ description: (selectedTask.description ? selectedTask.description + ' | ' : '') + 'Reason: ' + reason, status: 'to_do' }).eq('id', selectedTask.id);
     toast_simple('Reason submitted');
@@ -124,7 +132,7 @@ export function EmployeePanelPage() {
             <Button size="sm" variant="outline" onClick={() => { setSelectedTask(task); setExtensionDialog(true); }}>
               <Clock className="mr-1 h-4 w-4" />Request Extension
             </Button>
-            <Button size="sm" variant="outline" onClick={() => updateStatus(task.id, 'to_do')}>
+            <Button size="sm" variant="outline" onClick={() => { setSelectedTask(task); setNotCompletedDialog(true); }}>
               <AlertCircle className="mr-1 h-4 w-4" />Not Completed
             </Button>
             <Button size="sm" variant="ghost" className="text-muted-foreground" onClick={() => { setSelectedTask(task); setReasonDialog(true); }}>
@@ -209,6 +217,21 @@ export function EmployeePanelPage() {
         </div>
       )}
 
+      {/* Not Completed Dialog */}
+      <Dialog open={notCompletedDialog} onOpenChange={setNotCompletedDialog}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Not Completed</DialogTitle></DialogHeader>
+          <div className="space-y-2">
+            <Label>Why was this not completed?</Label>
+            <Textarea rows={3} value={notCompletedReason} onChange={e => setNotCompletedReason(e.target.value)} placeholder="Describe the reason..." />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setNotCompletedDialog(false)}>Cancel</Button>
+            <Button onClick={submitNotCompleted}>Submit</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Reason Dialog */}
       <Dialog open={reasonDialog} onOpenChange={setReasonDialog}>
         <DialogContent>
@@ -228,9 +251,15 @@ export function EmployeePanelPage() {
       <Dialog open={extensionDialog} onOpenChange={setExtensionDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>Request Extension</DialogTitle></DialogHeader>
-          <div className="space-y-2">
-            <Label>New Deadline</Label>
-            <Input type="date" value={extensionDate} onChange={e => setExtensionDate(e.target.value)} />
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <Label>New Deadline</Label>
+              <Input type="date" value={extensionDate} onChange={e => setExtensionDate(e.target.value)} />
+            </div>
+            <div className="space-y-1">
+              <Label>Reason for extension</Label>
+              <Textarea rows={2} placeholder="Why do you need more time?" onChange={e => setExtensionDate(prev => prev)} />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setExtensionDialog(false)}>Cancel</Button>
@@ -243,12 +272,18 @@ export function EmployeePanelPage() {
       <Dialog open={forwardDialog} onOpenChange={setForwardDialog}>
         <DialogContent>
           <DialogHeader><DialogTitle>Forward Task</DialogTitle></DialogHeader>
-          <div className="space-y-2">
-            <Label>Forward to</Label>
-            <select className="w-full rounded-md border px-3 py-2 text-sm" value={forwardTo} onChange={e => setForwardTo(e.target.value)}>
-              <option value="">Select member</option>
-              {allMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
-            </select>
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <Label>Forward to</Label>
+              <select className="w-full rounded-md border px-3 py-2 text-sm" value={forwardTo} onChange={e => setForwardTo(e.target.value)}>
+                <option value="">Select member</option>
+                {allMembers.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label>Note (optional)</Label>
+              <Textarea rows={2} placeholder="Add a note for the recipient..." />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setForwardDialog(false)}>Cancel</Button>
