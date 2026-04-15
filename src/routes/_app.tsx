@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, Outlet, useNavigate, useLocation } from '@tanstack/react-router';
 import { useAuth } from '@/hooks/use-auth';
 import { AppSidebar } from '@/components/AppSidebar';
 import { Bell } from 'lucide-react';
@@ -10,14 +10,19 @@ export const Route = createFileRoute('/_app')({
 });
 
 function AppLayoutRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, role } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate({ to: '/login' });
     }
-  }, [isLoading, isAuthenticated, navigate]);
+    // Redirect employees away from dashboard to their panel
+    if (!isLoading && isAuthenticated && role === 'employee' && location.pathname === '/dashboard') {
+      navigate({ to: '/employee' });
+    }
+  }, [isLoading, isAuthenticated, role, location.pathname, navigate]);
 
   if (isLoading) {
     return (

@@ -122,18 +122,20 @@ export function AppSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
-        <Link
-          to="/dashboard"
-          className={cn(
-            'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
-            location.pathname === '/dashboard'
-              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-              : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
-          )}
-        >
-          <LayoutDashboard className="h-4 w-4" />
-          <span>Dashboard</span>
-        </Link>
+        {role !== 'employee' && (
+          <Link
+            to="/dashboard"
+            className={cn(
+              'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+              location.pathname === '/dashboard'
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+            )}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>Dashboard</span>
+          </Link>
+        )}
 
         <Link
           to="/tracker"
