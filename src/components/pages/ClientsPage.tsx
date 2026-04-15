@@ -80,7 +80,7 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
         </Select>
         <Select value={filterBilling} onValueChange={setFilterBilling}>
           <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
-          <SelectContent><SelectItem value="all">All Billing</SelectItem><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="one_time">One-Time</SelectItem></SelectContent>
+          <SelectContent><SelectItem value="all">All Billing</SelectItem><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="quarterly">Quarterly</SelectItem><SelectItem value="annually">Annually</SelectItem><SelectItem value="one_time">One-Time</SelectItem></SelectContent>
         </Select>
       </div>
       {filtered.length === 0 ? (
@@ -132,7 +132,7 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
               <div className="space-y-2"><Label>Billing</Label>
                 <Select value={form.billing_label} onValueChange={v=>setForm({...form,billing_label:v})}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="one_time">One-Time</SelectItem></SelectContent>
+                  <SelectContent><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="quarterly">Quarterly</SelectItem><SelectItem value="annually">Annually</SelectItem><SelectItem value="one_time">One-Time</SelectItem></SelectContent>
                 </Select>
               </div>
             </div>

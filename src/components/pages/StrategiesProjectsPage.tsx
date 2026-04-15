@@ -123,7 +123,7 @@ export function StrategiesProjectsPage() {
               <div className="space-y-1"><Label>Billing Type</Label>
                 <Select value={form.billing_label} onValueChange={v => setForm({ ...form, billing_label: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent><SelectItem value="one_time">One-Time</SelectItem><SelectItem value="monthly">Monthly</SelectItem></SelectContent>
+                  <SelectContent><SelectItem value="one_time">One-Time</SelectItem><SelectItem value="monthly">Monthly</SelectItem><SelectItem value="quarterly">Quarterly</SelectItem><SelectItem value="annually">Annually</SelectItem></SelectContent>
                 </Select>
               </div>
               <div className="space-y-1"><Label>Deadline</Label><Input type="date" value={form.deadline} onChange={e => setForm({ ...form, deadline: e.target.value })} /></div>
