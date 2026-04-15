@@ -13,7 +13,7 @@ import { Plus, Pencil, Trash2, Search, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDate } from '@/lib/format';
 
-const emptyForm = { brand_name: '', email: '', phone: '', location: '', category: 'corporate', billing_label: 'monthly', onboarded_at: new Date().toISOString().split('T')[0], notes: '' };
+const emptyForm = { brand_name: '', email: '', phone: '', location: '', category: 'corporate', billing_label: 'monthly', onboarded_at: new Date().toISOString().split('T')[0], notes: '', quoted_price: '', final_price: '' };
 
 export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' }) {
   const buId = useBusinessUnit(businessUnit);
@@ -32,10 +32,10 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
   useEffect(() => { refresh(); }, [buId]);
 
   const openAdd = () => { setEditing(null); setForm(emptyForm); setDialogOpen(true); };
-  const openEdit = (c: any) => { setEditing(c); setForm({ brand_name: c.brand_name, email: c.email, phone: c.phone, location: c.location, category: c.category, billing_label: c.billing_label, onboarded_at: c.onboarded_at, notes: c.notes ?? '' }); setDialogOpen(true); };
+  const openEdit = (c: any) => { setEditing(c); setForm({ brand_name: c.brand_name, email: c.email, phone: c.phone, location: c.location, category: c.category, billing_label: c.billing_label, onboarded_at: c.onboarded_at, notes: c.notes ?? '', quoted_price: c.quoted_price != null ? String(c.quoted_price) : '', final_price: c.final_price != null ? String(c.final_price) : '' }); setDialogOpen(true); };
 
   const handleSave = async () => {
-    const payload = { ...form, business_unit_id: buId, notes: form.notes || null };
+    const payload = { ...form, business_unit_id: buId, notes: form.notes || null, quoted_price: form.quoted_price ? parseFloat(form.quoted_price) : null, final_price: form.final_price ? parseFloat(form.final_price) : null };
     if (editing) { await supabase.from('clients').update(payload).eq('id', editing.id); toast.success('Client updated'); }
     else { await supabase.from('clients').insert(payload); toast.success('Client added'); }
     setDialogOpen(false); refresh();
@@ -137,6 +137,10 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
               </div>
             </div>
             <div className="space-y-2"><Label>Onboarded Date</Label><Input type="date" value={form.onboarded_at} onChange={e=>setForm({...form,onboarded_at:e.target.value})} /></div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2"><Label>Quoted Price (₹)</Label><Input type="number" placeholder="0" value={form.quoted_price} onChange={e=>setForm({...form,quoted_price:e.target.value})} /></div>
+              <div className="space-y-2"><Label>Final Price (₹)</Label><Input type="number" placeholder="0" value={form.final_price} onChange={e=>setForm({...form,final_price:e.target.value})} /></div>
+            </div>
             <div className="space-y-2"><Label>Notes</Label><Textarea value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})} /></div>
           </div>
           <DialogFooter>
