@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   ListTodo,
+  BarChart2,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -149,6 +150,21 @@ export function AppSidebar() {
           <ListTodo className="h-4 w-4" />
           <span>Tracker</span>
         </Link>
+
+        {role !== 'employee' && (
+          <Link
+            to="/task-reports"
+            className={cn(
+              'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+              location.pathname === '/task-reports'
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+            )}
+          >
+            <BarChart2 className="h-4 w-4" />
+            <span>Task Reports</span>
+          </Link>
+        )}
 
         {role === 'employee' && (
           <Link

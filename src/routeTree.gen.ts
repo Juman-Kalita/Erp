@@ -16,6 +16,7 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppTrackerRouteImport } from './routes/_app.tracker'
 import { Route as AppTekRouteImport } from './routes/_app.tek'
+import { Route as AppTaskReportsRouteImport } from './routes/_app.task-reports'
 import { Route as AppStrategiesRouteImport } from './routes/_app.strategies'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppEmployeeRouteImport } from './routes/_app.employee'
@@ -70,6 +71,11 @@ const AppTrackerRoute = AppTrackerRouteImport.update({
 const AppTekRoute = AppTekRouteImport.update({
   id: '/tek',
   path: '/tek',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTaskReportsRoute = AppTaskReportsRouteImport.update({
+  id: '/task-reports',
+  path: '/task-reports',
   getParentRoute: () => AppRoute,
 } as any)
 const AppStrategiesRoute = AppStrategiesRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/employee': typeof AppEmployeeRoute
   '/settings': typeof AppSettingsRoute
   '/strategies': typeof AppStrategiesRouteWithChildren
+  '/task-reports': typeof AppTaskReportsRoute
   '/tek': typeof AppTekRouteWithChildren
   '/tracker': typeof AppTrackerRoute
   '/strategies/assets': typeof AppStrategiesAssetsRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/employee': typeof AppEmployeeRoute
   '/settings': typeof AppSettingsRoute
   '/strategies': typeof AppStrategiesRouteWithChildren
+  '/task-reports': typeof AppTaskReportsRoute
   '/tek': typeof AppTekRouteWithChildren
   '/tracker': typeof AppTrackerRoute
   '/strategies/assets': typeof AppStrategiesAssetsRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/_app/employee': typeof AppEmployeeRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/strategies': typeof AppStrategiesRouteWithChildren
+  '/_app/task-reports': typeof AppTaskReportsRoute
   '/_app/tek': typeof AppTekRouteWithChildren
   '/_app/tracker': typeof AppTrackerRoute
   '/_app/strategies/assets': typeof AppStrategiesAssetsRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/employee'
     | '/settings'
     | '/strategies'
+    | '/task-reports'
     | '/tek'
     | '/tracker'
     | '/strategies/assets'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/employee'
     | '/settings'
     | '/strategies'
+    | '/task-reports'
     | '/tek'
     | '/tracker'
     | '/strategies/assets'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/_app/employee'
     | '/_app/settings'
     | '/_app/strategies'
+    | '/_app/task-reports'
     | '/_app/tek'
     | '/_app/tracker'
     | '/_app/strategies/assets'
@@ -415,6 +427,13 @@ declare module '@tanstack/react-router' {
       path: '/tek'
       fullPath: '/tek'
       preLoaderRoute: typeof AppTekRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/task-reports': {
+      id: '/_app/task-reports'
+      path: '/task-reports'
+      fullPath: '/task-reports'
+      preLoaderRoute: typeof AppTaskReportsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/strategies': {
@@ -625,6 +644,7 @@ interface AppRouteChildren {
   AppEmployeeRoute: typeof AppEmployeeRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStrategiesRoute: typeof AppStrategiesRouteWithChildren
+  AppTaskReportsRoute: typeof AppTaskReportsRoute
   AppTekRoute: typeof AppTekRouteWithChildren
   AppTrackerRoute: typeof AppTrackerRoute
 }
@@ -634,6 +654,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppEmployeeRoute: AppEmployeeRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStrategiesRoute: AppStrategiesRouteWithChildren,
+  AppTaskReportsRoute: AppTaskReportsRoute,
   AppTekRoute: AppTekRouteWithChildren,
   AppTrackerRoute: AppTrackerRoute,
 }
