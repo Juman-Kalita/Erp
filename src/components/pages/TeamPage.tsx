@@ -12,7 +12,7 @@ import { Plus, Search, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatINR } from '@/lib/format';
 
-const emptyForm = { name: '', designation: '', email: '', phone: '', employment_label: 'salaried', joined_at: new Date().toISOString().split('T')[0], salary: '' };
+const emptyForm = { name: '', designation: '', email: '', phone: '', employment_label: 'salaried', joined_at: new Date().toISOString().split('T')[0], salary: '', password: '' };
 
 export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' }) {
   const buId = useBusinessUnit(businessUnit);
@@ -32,14 +32,34 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
   const openAdd = () => { setEditing(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (m: any) => {
     setEditing(m);
-    setForm({ name: m.name, designation: m.designation, email: m.email, phone: m.phone ?? '', employment_label: m.employment_label, joined_at: m.joined_at, salary: m.salary != null ? String(m.salary) : '' });
+    setForm({ name: m.name, designation: m.designation, email: m.email, phone: m.phone ?? '', employment_label: m.employment_label, joined_at: m.joined_at, salary: m.salary != null ? String(m.salary) : '', password: '' });
     setDialogOpen(true);
   };
 
   const handleSave = async () => {
     const payload = { name: form.name, designation: form.designation, email: form.email, phone: form.phone || null, employment_label: form.employment_label, joined_at: form.joined_at, salary: form.salary ? parseFloat(form.salary) : null, business_unit_id: buId, photo_url: null };
-    if (editing) { await supabase.from('team_members').update(payload).eq('id', editing.id); toast.success('Member updated'); }
-    else { await supabase.from('team_members').insert(payload); toast.success('Member added'); }
+    if (editing) {
+      await supabase.from('team_members').update(payload).eq('id', editing.id);
+      toast.success('Member updated');
+    } else {
+      // Create auth account if password provided
+      let userId: string | null = null;
+      if (form.password && form.email) {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: form.email,
+          password: form.password,
+          options: { data: { name: form.name } },
+        });
+        if (authError) { toast.error('Auth error: ' + authError.message); return; }
+        userId = authData.user?.id ?? null;
+      }
+      const { data: member } = await supabase.from('team_members').insert({ ...payload, user_id: userId }).select('id').single();
+      // Assign employee role
+      if (userId && member) {
+        await supabase.from('user_roles').insert({ user_id: userId, role: 'employee' });
+      }
+      toast.success(userId ? 'Member added with login account' : 'Member added');
+    }
     setDialogOpen(false); refresh();
   };
 
@@ -116,6 +136,13 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
               <div className="space-y-1"><Label>Date Joined</Label><Input type="date" value={form.joined_at} onChange={e => setForm({ ...form, joined_at: e.target.value })} /></div>
             </div>
             <div className="space-y-1"><Label>Salary (₹)</Label><Input type="number" placeholder="0" value={form.salary} onChange={e => setForm({ ...form, salary: e.target.value })} /></div>
+            {!editing && (
+              <div className="space-y-1 rounded-md border border-dashed p-3">
+                <p className="text-xs text-muted-foreground mb-2">Login credentials (optional — leave blank to skip)</p>
+                <div className="space-y-1"><Label>Login Password</Label><Input type="password" placeholder="Set employee password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} /></div>
+                <p className="text-xs text-muted-foreground mt-1">Employee will log in with their email + this password</p>
+              </div>
+            )}
           </div>
           <DialogFooter>
             {editing && <Button variant="destructive" className="mr-auto" onClick={() => handleDelete(editing.id)}>Delete</Button>}
