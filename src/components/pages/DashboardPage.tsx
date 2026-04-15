@@ -79,8 +79,8 @@ export function DashboardPage() {
         </>
       )}
       <div className="grid gap-4 md:grid-cols-2">
-        <BusinessUnitCard title="Solvix Tek" description="Tech and production — Leads, Clients, Team, Projects, Expense Tools, Invoices" to="/tek/leads" />
-        <BusinessUnitCard title="Solvix Strategies" description="Consulting and strategy — Leads, Clients, Team, Projects, Assets, Invoices" to="/strategies/leads" />
+        <BusinessUnitCard title="Solvix Tek" description="Tech and production — Leads, Clients, Team, Projects, Expense Tools, Invoices" to="/tek/dashboard" />
+        <BusinessUnitCard title="Solvix Strategies" description="Consulting and strategy — Leads, Clients, Team, Projects, Assets, Invoices" to="/strategies/dashboard" />
       </div>
     </div>
   );
