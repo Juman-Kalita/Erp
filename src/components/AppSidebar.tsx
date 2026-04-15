@@ -33,7 +33,6 @@ const tekItems: NavItem[] = [
   { label: 'Team Members', to: '/tek/team', icon: Users },
   { label: 'Projects', to: '/tek/projects', icon: FolderKanban },
   { label: 'Expense Tools', to: '/tek/expenses', icon: Wrench },
-  { label: 'Tracker', to: '/tek/tracker', icon: ListTodo },
   { label: 'Billing', to: '/tek/invoices', icon: Receipt },
 ];
 
@@ -45,7 +44,6 @@ const strategiesItems: NavItem[] = [
   { label: 'Projects', to: '/strategies/projects', icon: FolderKanban },
   { label: 'Assets', to: '/strategies/assets', icon: Package },
   { label: 'Expense Tools', to: '/strategies/expenses', icon: Wrench },
-  { label: 'Tracker', to: '/strategies/tracker', icon: ListTodo },
   { label: 'Billing', to: '/strategies/invoices', icon: Receipt },
 ];
 
@@ -135,6 +133,19 @@ export function AppSidebar() {
         >
           <LayoutDashboard className="h-4 w-4" />
           <span>Dashboard</span>
+        </Link>
+
+        <Link
+          to="/tracker"
+          className={cn(
+            'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+            location.pathname === '/tracker'
+              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+              : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+          )}
+        >
+          <ListTodo className="h-4 w-4" />
+          <span>Tracker</span>
         </Link>
 
         {role === 'employee' && (
