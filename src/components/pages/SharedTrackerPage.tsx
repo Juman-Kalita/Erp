@@ -54,7 +54,7 @@ export function SharedTrackerPage() {
 
   const handleSave = async () => {
     if (!form.team_member_id || !form.title) { toast.error('Member and title required'); return; }
-    const payload = { team_member_id: form.team_member_id, title: form.title, description: form.description || null, deadline: form.deadline || null, priority: form.priority, status: form.status, project_id: form.project_id || null };
+    const payload = { team_member_id: form.team_member_id, title: form.title, description: form.description || null, deadline: form.deadline || null, priority: form.priority, status: form.status, project_id: (form.project_id && form.project_id !== 'none') ? form.project_id : null };
     if (editing) { await supabase.from('tasks').update(payload).eq('id', editing.id); toast.success('Task updated'); }
     else { await supabase.from('tasks').insert(payload); toast.success('Task assigned'); }
     setDialogOpen(false); refresh();
@@ -171,7 +171,7 @@ export function SharedTrackerPage() {
               <Select value={form.project_id} onValueChange={v => setForm({...form, project_id: v})}>
                 <SelectTrigger><SelectValue placeholder="Select project" /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="none">None</SelectItem>
                   {projects.map(p => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
                 </SelectContent>
               </Select>
