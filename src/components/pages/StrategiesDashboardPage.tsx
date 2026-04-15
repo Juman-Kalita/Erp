@@ -80,7 +80,7 @@ export function StrategiesDashboardPage() {
         <StatCard title="Total Clients" value={stats.clients} icon={Users} to="/strategies/clients" />
         <StatCard title="Team Members" value={stats.team} icon={Users} to="/strategies/team" />
         <StatCard title="Projects" value={stats.projects} icon={FolderKanban} to="/strategies/projects" />
-        <StatCard title="Invoices" value={stats.invoices} icon={Receipt} to="/strategies/invoices" />
+        <StatCard title="Billing" value={stats.invoices} icon={Receipt} to="/strategies/invoices" />
       </div>
     </div>
   );

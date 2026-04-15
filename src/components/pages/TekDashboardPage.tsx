@@ -76,7 +76,7 @@ export function TekDashboardPage() {
         <StatCard title="Total Clients" value={stats.clients} icon={Users} to="/tek/clients" />
         <StatCard title="Team Members" value={stats.team} icon={Users} to="/tek/team" />
         <StatCard title="Projects" value={stats.projects} icon={FolderKanban} to="/tek/projects" />
-        <StatCard title="Invoices" value={stats.invoices} icon={Receipt} to="/tek/invoices" />
+        <StatCard title="Billing" value={stats.invoices} icon={Receipt} to="/tek/invoices" />
       </div>
     </div>
   );

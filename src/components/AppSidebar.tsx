@@ -32,7 +32,7 @@ const tekItems: NavItem[] = [
   { label: 'Team Members', to: '/tek/team', icon: Users },
   { label: 'Projects', to: '/tek/projects', icon: FolderKanban },
   { label: 'Expense Tools', to: '/tek/expenses', icon: Wrench },
-  { label: 'Invoices', to: '/tek/invoices', icon: Receipt },
+  { label: 'Billing', to: '/tek/invoices', icon: Receipt },
 ];
 
 const strategiesItems: NavItem[] = [
@@ -42,7 +42,7 @@ const strategiesItems: NavItem[] = [
   { label: 'Team Members', to: '/strategies/team', icon: Users },
   { label: 'Projects', to: '/strategies/projects', icon: FolderKanban },
   { label: 'Assets', to: '/strategies/assets', icon: Package },
-  { label: 'Invoices', to: '/strategies/invoices', icon: Receipt },
+  { label: 'Billing', to: '/strategies/invoices', icon: Receipt },
 ];
 
 function NavGroup({ title, items, defaultOpen }: { title: string; items: NavItem[]; defaultOpen?: boolean }) {

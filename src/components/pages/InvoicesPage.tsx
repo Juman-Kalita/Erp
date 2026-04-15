@@ -94,7 +94,7 @@ export function InvoicesPage({ businessUnit }: { businessUnit: 'tek' | 'strategi
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold">{title} — Invoices</h1>
+        <h1 className="text-2xl font-bold">{title} — Billing</h1>
         <Button size="sm" onClick={openAdd}><Plus className="mr-1 h-4 w-4" />Create Invoice</Button>
       </div>
       <div className="flex flex-wrap gap-3">
