@@ -36,11 +36,12 @@ export function DashboardPage() {
   useEffect(() => {
     if (role !== 'admin') return;
     const fetchStats = async () => {
-      const [invRes, expRes, assRes, buRes] = await Promise.all([
+      const [invRes, expRes, assRes, buRes, salRes] = await Promise.all([
         supabase.from('invoices').select('total, business_unit_id').eq('status', 'paid'),
         supabase.from('expense_tools').select('amount'),
         supabase.from('assets').select('price'),
         supabase.from('business_units').select('id, name'),
+        supabase.from('team_members').select('salary'),
       ]);
       const bus = buRes.data ?? [];
       const tekId = bus.find((b:any) => b.name === 'Solvix Tek')?.id;
@@ -48,9 +49,11 @@ export function DashboardPage() {
       const invs = invRes.data ?? [];
       const tekRev = invs.filter((i:any) => i.business_unit_id === tekId).reduce((s:number,i:any) => s + Number(i.total), 0);
       const strRev = invs.filter((i:any) => i.business_unit_id === strId).reduce((s:number,i:any) => s + Number(i.total), 0);
+      const toolExp = (expRes.data ?? []).reduce((s:number,e:any) => s + Number(e.amount), 0);
+      const salaryExp = (salRes.data ?? []).reduce((s:number,m:any) => s + Number(m.salary ?? 0), 0);
       setStats({
         revenue: tekRev + strRev,
-        expenses: (expRes.data ?? []).reduce((s:number,e:any) => s + Number(e.amount), 0),
+        expenses: toolExp + salaryExp,
         assets: (assRes.data ?? []).reduce((s:number,a:any) => s + Number(a.price), 0),
         tekRevenue: tekRev,
         strategiesRevenue: strRev,

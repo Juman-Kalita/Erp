@@ -24,7 +24,7 @@ function StatCard({ title, value, icon: Icon, to }: { title: string; value: stri
 
 export function StrategiesDashboardPage() {
   const buId = useBusinessUnit('strategies');
-  const [stats, setStats] = useState({ revenue: 0, assets: 0, leads: 0, clients: 0, team: 0, projects: 0, invoices: 0 });
+  const [stats, setStats] = useState({ revenue: 0, assets: 0, expenses: 0, leads: 0, clients: 0, team: 0, projects: 0, invoices: 0 });
 
   useEffect(() => {
     if (!buId) return;
@@ -33,13 +33,15 @@ export function StrategiesDashboardPage() {
       supabase.from('assets').select('price').eq('business_unit_id', buId),
       supabase.from('leads').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('clients').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
-      supabase.from('team_members').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
+      supabase.from('team_members').select('id, salary', { count: 'exact' }).eq('business_unit_id', buId),
       supabase.from('projects').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
     ]).then(([inv, assets, leads, clients, team, projects, allInv]) => {
+      const salaryExpenses = (team.data ?? []).reduce((s: number, m: any) => s + Number(m.salary ?? 0), 0);
       setStats({
         revenue: (inv.data ?? []).reduce((s: number, i: any) => s + Number(i.total), 0),
         assets: (assets.data ?? []).reduce((s: number, a: any) => s + Number(a.price), 0),
+        expenses: salaryExpenses,
         leads: leads.count ?? 0,
         clients: clients.count ?? 0,
         team: team.count ?? 0,
@@ -66,6 +68,13 @@ export function StrategiesDashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent><div className="text-2xl font-bold">{formatINR(stats.assets)}</div></CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Expenses (Salaries)</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent><div className="text-2xl font-bold">{formatINR(stats.expenses)}</div></CardContent>
         </Card>
         <StatCard title="Total Leads" value={stats.leads} icon={UserPlus} to="/strategies/leads" />
         <StatCard title="Total Clients" value={stats.clients} icon={Users} to="/strategies/clients" />

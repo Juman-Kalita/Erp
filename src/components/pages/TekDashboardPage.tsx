@@ -35,15 +35,18 @@ export function TekDashboardPage() {
       supabase.from('team_members').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('projects').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
       supabase.from('expense_tools').select('amount').eq('business_unit_id', buId),
+      supabase.from('team_members').select('salary').eq('business_unit_id', buId),
       supabase.from('invoices').select('id', { count: 'exact', head: true }).eq('business_unit_id', buId),
-    ]).then(([inv, leads, clients, team, projects, expenses, allInv]) => {
+    ]).then(([inv, leads, clients, team, projects, expenses, salaries, allInv]) => {
+      const toolExpenses = (expenses.data ?? []).reduce((s: number, e: any) => s + Number(e.amount), 0);
+      const salaryExpenses = (salaries.data ?? []).reduce((s: number, m: any) => s + Number(m.salary ?? 0), 0);
       setStats({
         revenue: (inv.data ?? []).reduce((s: number, i: any) => s + Number(i.total), 0),
         leads: leads.count ?? 0,
         clients: clients.count ?? 0,
         team: team.count ?? 0,
         projects: projects.count ?? 0,
-        expenses: (expenses.data ?? []).reduce((s: number, e: any) => s + Number(e.amount), 0),
+        expenses: toolExpenses + salaryExpenses,
         invoices: allInv.count ?? 0,
       });
     });
