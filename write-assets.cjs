@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+﻿const fs = require('fs');
+const assetsPage = `import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBusinessUnit } from '@/hooks/use-business-unit';
 import { Button } from '@/components/ui/button';
@@ -156,3 +157,6 @@ export function AssetsPage() {
     </div>
   );
 }
+`;
+fs.writeFileSync('src/components/pages/AssetsPage.tsx', assetsPage, { encoding: 'utf8' });
+console.log('assets done');

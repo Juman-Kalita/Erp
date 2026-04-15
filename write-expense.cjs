@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿const fs = require('fs');
+
+const expensePage = `import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBusinessUnit } from '@/hooks/use-business-unit';
 import { Button } from '@/components/ui/button';
@@ -134,3 +136,7 @@ export function ExpenseToolsPage() {
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/components/pages/ExpenseToolsPage.tsx', expensePage, { encoding: 'utf8' });
+console.log('expense done');

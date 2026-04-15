@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+﻿const fs = require('fs');
+const inv = `import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBusinessUnit } from '@/hooks/use-business-unit';
 import { Button } from '@/components/ui/button';
@@ -190,3 +191,6 @@ export function InvoicesPage({ businessUnit }: { businessUnit: 'tek' | 'strategi
     </div>
   );
 }
+`;
+fs.writeFileSync('src/components/pages/InvoicesPage.tsx', inv, { encoding: 'utf8' });
+console.log('invoices done');
