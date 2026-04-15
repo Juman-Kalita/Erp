@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+﻿const fs = require('fs');
+const content = `import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/use-auth';
 import { Card, CardContent } from '@/components/ui/card';
@@ -63,7 +64,7 @@ export function EmployeePanelPage() {
 
   const submitReason = async () => {
     if (!selectedTask) return;
-    await supabase.from('tasks').update({ description: (selectedTask.description ? selectedTask.description + ' | ' : '') + 'Reason: ' + reason, status: 'to_do' }).eq('id', selectedTask.id);
+    await supabase.from('tasks').update({ description: (selectedTask.description ? selectedTask.description + '\n\n' : '') + 'Reason: ' + reason, status: 'to_do' }).eq('id', selectedTask.id);
     toast_simple('Reason submitted');
     setReasonDialog(false); setReason('');
     setTasks(prev => prev.map(t => t.id === selectedTask.id ? { ...t, status: 'to_do' } : t));
@@ -71,7 +72,7 @@ export function EmployeePanelPage() {
 
   const submitExtension = async () => {
     if (!selectedTask) return;
-    await supabase.from('tasks').update({ deadline: extensionDate, description: (selectedTask.description ? selectedTask.description + ' | ' : '') + 'Extension requested to: ' + extensionDate }).eq('id', selectedTask.id);
+    await supabase.from('tasks').update({ deadline: extensionDate, description: (selectedTask.description ? selectedTask.description + '\n\n' : '') + 'Extension requested to: ' + extensionDate }).eq('id', selectedTask.id);
     toast_simple('Extension requested');
     setExtensionDialog(false); setExtensionDate('');
     setTasks(prev => prev.map(t => t.id === selectedTask.id ? { ...t, deadline: extensionDate } : t));
@@ -259,3 +260,6 @@ export function EmployeePanelPage() {
     </div>
   );
 }
+`;
+fs.writeFileSync('src/components/pages/EmployeePanelPage.tsx', content, { encoding: 'utf8' });
+console.log('done');
