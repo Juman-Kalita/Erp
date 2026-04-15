@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿const fs = require('fs');
+
+const page = `import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useBusinessUnit } from '@/hooks/use-business-unit';
 import { Button } from '@/components/ui/button';
@@ -97,7 +99,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
   const exportCSV = () => {
     const rows = [['Brand/Company','Email','Phone','Location','Section','Type','Quoted Amount','Category','Status'],
       ...filtered.map((l:any)=>[l.brand_name,l.email,l.phone,l.location,l.lead_section??'',l.lead_type??'',l.quoted_amount??'',l.category,l.status])];
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'})); a.download='leads.csv'; a.click();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\\n')],{type:'text/csv'})); a.download='leads.csv'; a.click();
   };
 
   const filtered = items.filter(l => {
@@ -277,3 +279,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
     </div>
   );
 }
+`;
+
+fs.writeFileSync('src/components/pages/LeadsPage.tsx', page, { encoding: 'utf8' });
+console.log('done');
