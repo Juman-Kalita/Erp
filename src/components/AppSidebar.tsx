@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Menu,
   X,
+  ListTodo,
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -32,6 +33,7 @@ const tekItems: NavItem[] = [
   { label: 'Team Members', to: '/tek/team', icon: Users },
   { label: 'Projects', to: '/tek/projects', icon: FolderKanban },
   { label: 'Expense Tools', to: '/tek/expenses', icon: Wrench },
+  { label: 'Tracker', to: '/tek/tracker', icon: ListTodo },
   { label: 'Billing', to: '/tek/invoices', icon: Receipt },
 ];
 
@@ -43,6 +45,7 @@ const strategiesItems: NavItem[] = [
   { label: 'Projects', to: '/strategies/projects', icon: FolderKanban },
   { label: 'Assets', to: '/strategies/assets', icon: Package },
   { label: 'Expense Tools', to: '/strategies/expenses', icon: Wrench },
+  { label: 'Tracker', to: '/strategies/tracker', icon: ListTodo },
   { label: 'Billing', to: '/strategies/invoices', icon: Receipt },
 ];
 
@@ -134,8 +137,27 @@ export function AppSidebar() {
           <span>Dashboard</span>
         </Link>
 
-        <NavGroup title="Solvix Tek" items={tekItems} />
-        <NavGroup title="Solvix Strategies" items={strategiesItems} />
+        {role === 'employee' && (
+          <Link
+            to="/employee"
+            className={cn(
+              'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
+              location.pathname === '/employee'
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+                : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
+            )}
+          >
+            <ListTodo className="h-4 w-4" />
+            <span>My Tasks</span>
+          </Link>
+        )}
+
+        {role !== 'employee' && (
+          <>
+            <NavGroup title="Solvix Tek" items={tekItems} />
+            <NavGroup title="Solvix Strategies" items={strategiesItems} />
+          </>
+        )}
       </nav>
 
       {/* Footer */}

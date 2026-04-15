@@ -17,7 +17,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppTekRouteImport } from './routes/_app.tek'
 import { Route as AppStrategiesRouteImport } from './routes/_app.strategies'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppEmployeeRouteImport } from './routes/_app.employee'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppTekTrackerRouteImport } from './routes/_app.tek.tracker'
 import { Route as AppTekTeamRouteImport } from './routes/_app.tek.team'
 import { Route as AppTekProjectsRouteImport } from './routes/_app.tek.projects'
 import { Route as AppTekLeadsRouteImport } from './routes/_app.tek.leads'
@@ -25,6 +27,7 @@ import { Route as AppTekInvoicesRouteImport } from './routes/_app.tek.invoices'
 import { Route as AppTekExpensesRouteImport } from './routes/_app.tek.expenses'
 import { Route as AppTekDashboardRouteImport } from './routes/_app.tek.dashboard'
 import { Route as AppTekClientsRouteImport } from './routes/_app.tek.clients'
+import { Route as AppStrategiesTrackerRouteImport } from './routes/_app.strategies.tracker'
 import { Route as AppStrategiesTeamRouteImport } from './routes/_app.strategies.team'
 import { Route as AppStrategiesProjectsRouteImport } from './routes/_app.strategies.projects'
 import { Route as AppStrategiesLeadsRouteImport } from './routes/_app.strategies.leads'
@@ -73,10 +76,20 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEmployeeRoute = AppEmployeeRouteImport.update({
+  id: '/employee',
+  path: '/employee',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AppRoute,
+} as any)
+const AppTekTrackerRoute = AppTekTrackerRouteImport.update({
+  id: '/tracker',
+  path: '/tracker',
+  getParentRoute: () => AppTekRoute,
 } as any)
 const AppTekTeamRoute = AppTekTeamRouteImport.update({
   id: '/team',
@@ -112,6 +125,11 @@ const AppTekClientsRoute = AppTekClientsRouteImport.update({
   id: '/clients',
   path: '/clients',
   getParentRoute: () => AppTekRoute,
+} as any)
+const AppStrategiesTrackerRoute = AppStrategiesTrackerRouteImport.update({
+  id: '/tracker',
+  path: '/tracker',
+  getParentRoute: () => AppStrategiesRoute,
 } as any)
 const AppStrategiesTeamRoute = AppStrategiesTeamRouteImport.update({
   id: '/team',
@@ -160,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AppDashboardRoute
+  '/employee': typeof AppEmployeeRoute
   '/settings': typeof AppSettingsRoute
   '/strategies': typeof AppStrategiesRouteWithChildren
   '/tek': typeof AppTekRouteWithChildren
@@ -171,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
   '/strategies/team': typeof AppStrategiesTeamRoute
+  '/strategies/tracker': typeof AppStrategiesTrackerRoute
   '/tek/clients': typeof AppTekClientsRoute
   '/tek/dashboard': typeof AppTekDashboardRoute
   '/tek/expenses': typeof AppTekExpensesRoute
@@ -178,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/tek/leads': typeof AppTekLeadsRoute
   '/tek/projects': typeof AppTekProjectsRoute
   '/tek/team': typeof AppTekTeamRoute
+  '/tek/tracker': typeof AppTekTrackerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -185,6 +206,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AppDashboardRoute
+  '/employee': typeof AppEmployeeRoute
   '/settings': typeof AppSettingsRoute
   '/strategies': typeof AppStrategiesRouteWithChildren
   '/tek': typeof AppTekRouteWithChildren
@@ -196,6 +218,7 @@ export interface FileRoutesByTo {
   '/strategies/leads': typeof AppStrategiesLeadsRoute
   '/strategies/projects': typeof AppStrategiesProjectsRoute
   '/strategies/team': typeof AppStrategiesTeamRoute
+  '/strategies/tracker': typeof AppStrategiesTrackerRoute
   '/tek/clients': typeof AppTekClientsRoute
   '/tek/dashboard': typeof AppTekDashboardRoute
   '/tek/expenses': typeof AppTekExpensesRoute
@@ -203,6 +226,7 @@ export interface FileRoutesByTo {
   '/tek/leads': typeof AppTekLeadsRoute
   '/tek/projects': typeof AppTekProjectsRoute
   '/tek/team': typeof AppTekTeamRoute
+  '/tek/tracker': typeof AppTekTrackerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,6 +236,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/employee': typeof AppEmployeeRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/strategies': typeof AppStrategiesRouteWithChildren
   '/_app/tek': typeof AppTekRouteWithChildren
@@ -223,6 +248,7 @@ export interface FileRoutesById {
   '/_app/strategies/leads': typeof AppStrategiesLeadsRoute
   '/_app/strategies/projects': typeof AppStrategiesProjectsRoute
   '/_app/strategies/team': typeof AppStrategiesTeamRoute
+  '/_app/strategies/tracker': typeof AppStrategiesTrackerRoute
   '/_app/tek/clients': typeof AppTekClientsRoute
   '/_app/tek/dashboard': typeof AppTekDashboardRoute
   '/_app/tek/expenses': typeof AppTekExpensesRoute
@@ -230,6 +256,7 @@ export interface FileRoutesById {
   '/_app/tek/leads': typeof AppTekLeadsRoute
   '/_app/tek/projects': typeof AppTekProjectsRoute
   '/_app/tek/team': typeof AppTekTeamRoute
+  '/_app/tek/tracker': typeof AppTekTrackerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -239,6 +266,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/dashboard'
+    | '/employee'
     | '/settings'
     | '/strategies'
     | '/tek'
@@ -250,6 +278,7 @@ export interface FileRouteTypes {
     | '/strategies/leads'
     | '/strategies/projects'
     | '/strategies/team'
+    | '/strategies/tracker'
     | '/tek/clients'
     | '/tek/dashboard'
     | '/tek/expenses'
@@ -257,6 +286,7 @@ export interface FileRouteTypes {
     | '/tek/leads'
     | '/tek/projects'
     | '/tek/team'
+    | '/tek/tracker'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -264,6 +294,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/dashboard'
+    | '/employee'
     | '/settings'
     | '/strategies'
     | '/tek'
@@ -275,6 +306,7 @@ export interface FileRouteTypes {
     | '/strategies/leads'
     | '/strategies/projects'
     | '/strategies/team'
+    | '/strategies/tracker'
     | '/tek/clients'
     | '/tek/dashboard'
     | '/tek/expenses'
@@ -282,6 +314,7 @@ export interface FileRouteTypes {
     | '/tek/leads'
     | '/tek/projects'
     | '/tek/team'
+    | '/tek/tracker'
   id:
     | '__root__'
     | '/'
@@ -290,6 +323,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/_app/dashboard'
+    | '/_app/employee'
     | '/_app/settings'
     | '/_app/strategies'
     | '/_app/tek'
@@ -301,6 +335,7 @@ export interface FileRouteTypes {
     | '/_app/strategies/leads'
     | '/_app/strategies/projects'
     | '/_app/strategies/team'
+    | '/_app/strategies/tracker'
     | '/_app/tek/clients'
     | '/_app/tek/dashboard'
     | '/_app/tek/expenses'
@@ -308,6 +343,7 @@ export interface FileRouteTypes {
     | '/_app/tek/leads'
     | '/_app/tek/projects'
     | '/_app/tek/team'
+    | '/_app/tek/tracker'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -376,12 +412,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/employee': {
+      id: '/_app/employee'
+      path: '/employee'
+      fullPath: '/employee'
+      preLoaderRoute: typeof AppEmployeeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/_app/tek/tracker': {
+      id: '/_app/tek/tracker'
+      path: '/tracker'
+      fullPath: '/tek/tracker'
+      preLoaderRoute: typeof AppTekTrackerRouteImport
+      parentRoute: typeof AppTekRoute
     }
     '/_app/tek/team': {
       id: '/_app/tek/team'
@@ -431,6 +481,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/tek/clients'
       preLoaderRoute: typeof AppTekClientsRouteImport
       parentRoute: typeof AppTekRoute
+    }
+    '/_app/strategies/tracker': {
+      id: '/_app/strategies/tracker'
+      path: '/tracker'
+      fullPath: '/strategies/tracker'
+      preLoaderRoute: typeof AppStrategiesTrackerRouteImport
+      parentRoute: typeof AppStrategiesRoute
     }
     '/_app/strategies/team': {
       id: '/_app/strategies/team'
@@ -500,6 +557,7 @@ interface AppStrategiesRouteChildren {
   AppStrategiesLeadsRoute: typeof AppStrategiesLeadsRoute
   AppStrategiesProjectsRoute: typeof AppStrategiesProjectsRoute
   AppStrategiesTeamRoute: typeof AppStrategiesTeamRoute
+  AppStrategiesTrackerRoute: typeof AppStrategiesTrackerRoute
 }
 
 const AppStrategiesRouteChildren: AppStrategiesRouteChildren = {
@@ -511,6 +569,7 @@ const AppStrategiesRouteChildren: AppStrategiesRouteChildren = {
   AppStrategiesLeadsRoute: AppStrategiesLeadsRoute,
   AppStrategiesProjectsRoute: AppStrategiesProjectsRoute,
   AppStrategiesTeamRoute: AppStrategiesTeamRoute,
+  AppStrategiesTrackerRoute: AppStrategiesTrackerRoute,
 }
 
 const AppStrategiesRouteWithChildren = AppStrategiesRoute._addFileChildren(
@@ -525,6 +584,7 @@ interface AppTekRouteChildren {
   AppTekLeadsRoute: typeof AppTekLeadsRoute
   AppTekProjectsRoute: typeof AppTekProjectsRoute
   AppTekTeamRoute: typeof AppTekTeamRoute
+  AppTekTrackerRoute: typeof AppTekTrackerRoute
 }
 
 const AppTekRouteChildren: AppTekRouteChildren = {
@@ -535,6 +595,7 @@ const AppTekRouteChildren: AppTekRouteChildren = {
   AppTekLeadsRoute: AppTekLeadsRoute,
   AppTekProjectsRoute: AppTekProjectsRoute,
   AppTekTeamRoute: AppTekTeamRoute,
+  AppTekTrackerRoute: AppTekTrackerRoute,
 }
 
 const AppTekRouteWithChildren =
@@ -542,6 +603,7 @@ const AppTekRouteWithChildren =
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppEmployeeRoute: typeof AppEmployeeRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppStrategiesRoute: typeof AppStrategiesRouteWithChildren
   AppTekRoute: typeof AppTekRouteWithChildren
@@ -549,6 +611,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppEmployeeRoute: AppEmployeeRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppStrategiesRoute: AppStrategiesRouteWithChildren,
   AppTekRoute: AppTekRouteWithChildren,
