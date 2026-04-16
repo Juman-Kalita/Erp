@@ -21,8 +21,7 @@ function AppLayoutRoute() {
     // Redirect employees/team_leads away from dashboard to their panel
     if (!isLoading && isAuthenticated && (role === 'employee' || role === 'team_lead') && location.pathname === '/dashboard') {
       navigate({ to: '/employee' });
-    }
-  }, [isLoading, isAuthenticated, role, location.pathname, navigate]);
+    }  }, [isLoading, isAuthenticated, role, location.pathname, navigate]);
 
   if (isLoading) {
     return (

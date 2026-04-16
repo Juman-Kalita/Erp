@@ -200,7 +200,12 @@ export function AppSidebar() {
 
         {/* manager: full Solvix Strategies access */}
         {role === 'manager' && (
-          <NavGroup title="Solvix Strategies" items={strategiesItems} defaultOpen />
+          <>
+            <Link to="/employee" className={cn('flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors', location.pathname === '/employee' ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground')}>
+              <ListTodo className="h-4 w-4" /><span>My Tasks</span>
+            </Link>
+            <NavGroup title="Solvix Strategies" items={strategiesItems} defaultOpen />
+          </>
         )}
 
         {/* admin: full access */}
