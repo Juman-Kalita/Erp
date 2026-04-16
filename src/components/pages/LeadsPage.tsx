@@ -198,7 +198,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
                 <TableRow key={l.id} className="even:bg-muted/30">
                   <TableCell className="font-medium">{l.brand_name}</TableCell>
                   <TableCell>{l.email}</TableCell><TableCell>{l.phone}</TableCell>
-                  <TableCell>{l.location ? <a href={l.location} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs flex items-center gap-1">📍 View Map</a> : '—'}</TableCell>
+                  <TableCell>{l.location ? <a href={l.location.startsWith('http') ? l.location : 'https://' + l.location} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs flex items-center gap-1">📍 View Map</a> : '—'}</TableCell>
                   {isTek && <TableCell><Badge variant="outline" className="capitalize">{l.lead_section ?? '—'}</Badge></TableCell>}
                   <TableCell className="max-w-[150px]">
                     <div className="flex flex-wrap gap-1">
@@ -239,7 +239,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
               <Label>Location (Google Maps link)</Label>
               <Input placeholder="https://maps.google.com/..." value={form.location} onChange={e=>setForm({...form,location:e.target.value})} />
               {form.location && (
-                <a href={form.location} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-1">
+                <a href={form.location.startsWith('http') ? form.location : 'https://' + form.location} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-1">
                   📍 Preview location
                 </a>
               )}
