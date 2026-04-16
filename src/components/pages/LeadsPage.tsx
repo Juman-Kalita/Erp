@@ -197,7 +197,8 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
               {filtered.map((l:any) => (
                 <TableRow key={l.id} className="even:bg-muted/30">
                   <TableCell className="font-medium">{l.brand_name}</TableCell>
-                  <TableCell>{l.email}</TableCell><TableCell>{l.phone}</TableCell><TableCell>{l.location}</TableCell>
+                  <TableCell>{l.email}</TableCell><TableCell>{l.phone}</TableCell>
+                  <TableCell>{l.location ? <a href={l.location} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs flex items-center gap-1">📍 View Map</a> : '—'}</TableCell>
                   {isTek && <TableCell><Badge variant="outline" className="capitalize">{l.lead_section ?? '—'}</Badge></TableCell>}
                   <TableCell className="max-w-[150px]">
                     <div className="flex flex-wrap gap-1">
@@ -234,7 +235,15 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
               <div className="space-y-1"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
               <div className="space-y-1"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
             </div>
-            <div className="space-y-1"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
+            <div className="space-y-1">
+              <Label>Location (Google Maps link)</Label>
+              <Input placeholder="https://maps.google.com/..." value={form.location} onChange={e=>setForm({...form,location:e.target.value})} />
+              {form.location && (
+                <a href={form.location} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-1">
+                  📍 Preview location
+                </a>
+              )}
+            </div>
 
             {isTek && (
               <div className="space-y-1"><Label>Section</Label>

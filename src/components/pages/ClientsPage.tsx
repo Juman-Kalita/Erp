@@ -100,7 +100,8 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
               {filtered.map((c:any) => (
                 <TableRow key={c.id} className="even:bg-muted/30">
                   <TableCell className="font-medium">{c.brand_name}</TableCell>
-                  <TableCell>{c.email}</TableCell><TableCell>{c.phone}</TableCell><TableCell>{c.location}</TableCell>
+                  <TableCell>{c.email}</TableCell><TableCell>{c.phone}</TableCell>
+                  <TableCell>{c.location ? <a href={c.location} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline text-xs">📍 View Map</a> : '—'}</TableCell>
                   <TableCell><Badge variant="secondary" className="capitalize">{c.category}</Badge></TableCell>
                   <TableCell><Badge variant="outline" className="capitalize">{c.billing_label.replace('_',' ')}</Badge></TableCell>
                   <TableCell>{formatDate(c.onboarded_at)}</TableCell>
@@ -123,7 +124,10 @@ export function ClientsPage({ businessUnit }: { businessUnit: 'tek' | 'strategie
               <div className="space-y-1"><Label>Email</Label><Input type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} /></div>
               <div className="space-y-1"><Label>Phone</Label><Input value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} /></div>
             </div>
-            <div className="space-y-1"><Label>Location</Label><Input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} /></div>
+            <div className="space-y-1"><Label>Location (Google Maps link)</Label>
+              <Input placeholder="https://maps.google.com/..." value={form.location} onChange={e=>setForm({...form,location:e.target.value})} />
+              {form.location && <a href={form.location} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline">📍 Preview location</a>}
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1"><Label>Category</Label>
                 <Select value={form.category} onValueChange={v=>setForm({...form,category:v})}>
