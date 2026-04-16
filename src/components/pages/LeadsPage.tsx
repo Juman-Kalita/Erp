@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, Pencil, Trash2, Search, Download, X } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Download, X, UserCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDate, formatINR } from '@/lib/format';
 
@@ -108,6 +108,25 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
     if (!confirm('Delete this lead?')) return;
     await supabase.from('leads').delete().eq('id', id);
     toast.success('Lead deleted'); refresh();
+  };
+
+  const handleOnboard = async (l: any) => {
+    if (!confirm(`Onboard "${l.brand_name}" as a client?`)) return;
+    await supabase.from('clients').insert({
+      business_unit_id: buId,
+      brand_name: l.brand_name,
+      email: l.email,
+      phone: l.phone,
+      location: l.location,
+      category: l.category,
+      billing_label: 'monthly',
+      onboarded_at: new Date().toISOString().split('T')[0],
+      notes: l.notes,
+      quoted_price: l.quoted_amount,
+    });
+    await supabase.from('leads').update({ status: 'contacted' }).eq('id', l.id);
+    toast.success(`${l.brand_name} onboarded as client!`);
+    refresh();
   };
 
   const toggleStatus = async (l: any) => {
@@ -216,6 +235,7 @@ export function LeadsPage({ businessUnit }: { businessUnit: 'tek' | 'strategies'
                   </TableCell>
                   <TableCell>{formatDate(l.created_at)}</TableCell>
                   <TableCell><div className="flex gap-1">
+                    <Button variant="ghost" size="icon" title="Onboard as Client" onClick={()=>handleOnboard(l)}><UserCheck className="h-4 w-4 text-green-600" /></Button>
                     <Button variant="ghost" size="icon" onClick={()=>openEdit(l)}><Pencil className="h-4 w-4" /></Button>
                     <Button variant="ghost" size="icon" onClick={()=>handleDelete(l.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </div></TableCell>
