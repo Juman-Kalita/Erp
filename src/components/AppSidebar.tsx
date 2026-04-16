@@ -93,7 +93,7 @@ function NavGroup({ title, items, defaultOpen }: { title: string; items: NavItem
 }
 
 export function AppSidebar() {
-  const { user, role, signOut } = useAuth();
+  const { user, role, signOut, businessUnitId } = useAuth();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -123,7 +123,7 @@ export function AppSidebar() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
-        {role !== 'employee' && (
+        {(role === 'admin' || role === 'manager') && (
           <Link
             to="/dashboard"
             className={cn(
@@ -151,7 +151,7 @@ export function AppSidebar() {
           <span>Tracker</span>
         </Link>
 
-        {role !== 'employee' && (
+        {(role === 'admin' || role === 'manager' || role === 'team_lead') && (
           <Link
             to="/task-reports"
             className={cn(
@@ -181,7 +181,30 @@ export function AppSidebar() {
           </Link>
         )}
 
-        {role !== 'employee' && (
+        {/* team_lead: My Tasks + Projects of their unit + Tracker + Task Reports */}
+        {role === 'team_lead' && (
+          <>
+            <Link to="/employee" className={cn('flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors', location.pathname === '/employee' ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium' : 'text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground')}>
+              <ListTodo className="h-4 w-4" /><span>My Tasks</span>
+            </Link>
+            <NavGroup
+              title="Projects"
+              defaultOpen
+              items={[
+                { label: 'Tek Projects', to: '/tek/projects', icon: FolderKanban },
+                { label: 'Strategies Projects', to: '/strategies/projects', icon: FolderKanban },
+              ]}
+            />
+          </>
+        )}
+
+        {/* manager: full Solvix Strategies access */}
+        {role === 'manager' && (
+          <NavGroup title="Solvix Strategies" items={strategiesItems} defaultOpen />
+        )}
+
+        {/* admin: full access */}
+        {(role === 'admin') && (
           <>
             <NavGroup title="Solvix Tek" items={tekItems} />
             <NavGroup title="Solvix Strategies" items={strategiesItems} />

@@ -12,7 +12,7 @@ import { Plus, Search, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatINR } from '@/lib/format';
 
-const emptyForm = { name: '', designation: '', email: '', phone: '', employment_label: 'salaried', joined_at: new Date().toISOString().split('T')[0], salary: '', password: '' };
+const emptyForm = { name: '', designation: '', email: '', phone: '', employment_label: 'salaried', joined_at: new Date().toISOString().split('T')[0], salary: '', password: '', app_role: 'employee' };
 
 export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' }) {
   const buId = useBusinessUnit(businessUnit);
@@ -32,14 +32,18 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
   const openAdd = () => { setEditing(null); setForm(emptyForm); setDialogOpen(true); };
   const openEdit = (m: any) => {
     setEditing(m);
-    setForm({ name: m.name, designation: m.designation, email: m.email, phone: m.phone ?? '', employment_label: m.employment_label, joined_at: m.joined_at, salary: m.salary != null ? String(m.salary) : '', password: '' });
+    setForm({ name: m.name, designation: m.designation, email: m.email, phone: m.phone ?? '', employment_label: m.employment_label, joined_at: m.joined_at, salary: m.salary != null ? String(m.salary) : '', password: '', app_role: m.app_role ?? 'employee' });
     setDialogOpen(true);
   };
 
   const handleSave = async () => {
-    const payload = { name: form.name, designation: form.designation, email: form.email, phone: form.phone || null, employment_label: form.employment_label, joined_at: form.joined_at, salary: form.salary ? parseFloat(form.salary) : null, business_unit_id: buId, photo_url: null };
+    const payload = { name: form.name, designation: form.designation, email: form.email, phone: form.phone || null, employment_label: form.employment_label, joined_at: form.joined_at, salary: form.salary ? parseFloat(form.salary) : null, business_unit_id: buId, photo_url: null, app_role: form.app_role };
     if (editing) {
       await supabase.from('team_members').update(payload).eq('id', editing.id);
+      // Update role in user_roles if linked
+      if (editing.user_id) {
+        await supabase.from('user_roles').update({ role: form.app_role as any }).eq('user_id', editing.user_id);
+      }
       toast.success('Member updated');
     } else {
       // Create auth account if password provided
@@ -56,7 +60,7 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
       const { data: member } = await supabase.from('team_members').insert({ ...payload, user_id: userId }).select('id').single();
       // Assign employee role
       if (userId && member) {
-        await supabase.from('user_roles').insert({ user_id: userId, role: 'employee' });
+        await supabase.from('user_roles').insert({ user_id: userId, role: form.app_role as any });
       }
       toast.success(userId ? 'Member added with login account' : 'Member added');
     }
@@ -108,6 +112,7 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
                   <div className="text-sm text-muted-foreground truncate">{m.designation}</div>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="outline" className="capitalize text-xs">{m.employment_label}</Badge>
+                    {m.app_role && m.app_role !== 'employee' && <Badge variant="secondary" className="capitalize text-xs">{m.app_role.replace('_', ' ')}</Badge>}
                     {m.salary != null && <span className="text-xs text-muted-foreground">{formatINR(m.salary)}</span>}
                   </div>
                 </div>
@@ -136,6 +141,16 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
               <div className="space-y-1"><Label>Date Joined</Label><Input type="date" value={form.joined_at} onChange={e => setForm({ ...form, joined_at: e.target.value })} /></div>
             </div>
             <div className="space-y-1"><Label>Salary (₹)</Label><Input type="number" placeholder="0" value={form.salary} onChange={e => setForm({ ...form, salary: e.target.value })} /></div>
+            <div className="space-y-1"><Label>Role</Label>
+              <Select value={form.app_role} onValueChange={v => setForm({ ...form, app_role: v })}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="employee">Employee</SelectItem>
+                  <SelectItem value="team_lead">Team Lead</SelectItem>
+                  <SelectItem value="manager">Manager</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             {!editing && (
               <div className="space-y-1 rounded-md border border-dashed p-3">
                 <p className="text-xs text-muted-foreground mb-2">Login credentials (optional — leave blank to skip)</p>

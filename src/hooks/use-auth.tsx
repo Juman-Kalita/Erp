@@ -2,11 +2,12 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import { supabase } from '@/integrations/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
-type AppRole = 'admin' | 'manager';
+type AppRole = 'admin' | 'manager' | 'team_lead' | 'employee';
 
 interface AuthState {
   user: User | null;
   role: AppRole | null;
+  businessUnitId: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -19,11 +20,15 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<AppRole | null>(null);
+  const [businessUnitId, setBusinessUnitId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchRole = async (userId: string) => {
     const { data } = await supabase.from('user_roles').select('role').eq('user_id', userId).single();
     setRole((data?.role as AppRole) ?? null);
+    // Fetch business unit for team_lead/employee
+    const { data: member } = await supabase.from('team_members').select('business_unit_id').eq('user_id', userId).single();
+    setBusinessUnitId(member?.business_unit_id ?? null);
   };
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, isLoading, isAuthenticated: !!user, signIn, signOut, changePassword }}>
+    <AuthContext.Provider value={{ user, role, businessUnitId, isLoading, isAuthenticated: !!user, signIn, signOut, changePassword }}>
       {children}
     </AuthContext.Provider>
   );

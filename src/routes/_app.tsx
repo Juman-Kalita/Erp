@@ -18,8 +18,8 @@ function AppLayoutRoute() {
     if (!isLoading && !isAuthenticated) {
       navigate({ to: '/login' });
     }
-    // Redirect employees away from dashboard to their panel
-    if (!isLoading && isAuthenticated && role === 'employee' && location.pathname === '/dashboard') {
+    // Redirect employees/team_leads away from dashboard to their panel
+    if (!isLoading && isAuthenticated && (role === 'employee' || role === 'team_lead') && location.pathname === '/dashboard') {
       navigate({ to: '/employee' });
     }
   }, [isLoading, isAuthenticated, role, location.pathname, navigate]);
