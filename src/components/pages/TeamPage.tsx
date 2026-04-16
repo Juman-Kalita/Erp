@@ -25,7 +25,9 @@ export function TeamPage({ businessUnit }: { businessUnit: 'tek' | 'strategies' 
 
   const refresh = async () => {
     const { data } = await supabase.from('team_members').select('*').eq('business_unit_id', buId).order('name');
-    setMembers(data ?? []);
+    // Hide the current user's own profile from the list
+    const { data: { user } } = await supabase.auth.getUser();
+    setMembers((data ?? []).filter(m => m.user_id !== user?.id));
   };
   useEffect(() => { if (buId) refresh(); }, [buId]);
 
